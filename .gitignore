@@ -19,3 +19,11 @@ reports/
 # Ignore DVC caches
 .dvc/tmp/
 .dvc/cache/
+# DVCLive logs
+dvclive/
+
+# MLflow runs
+mlruns/
+
+# Log files
+logs/
