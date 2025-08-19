@@ -1,0 +1,21 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore data
+data/
+data/raw/
+data/interim/
+data/processed/
+
+# Ignore models
+model/
+*.pkl
+*.h5
+
+# Ignore reports
+reports/
+
+# Ignore DVC caches
+.dvc/tmp/
+.dvc/cache/
