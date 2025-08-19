@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Khushi Panchal/Desktop/mlops_image_classification/mlruns/916476453877775858/2447a5b7a702488685d15b5a3c4201ac/artifacts
+end_time: 1755586367682
+entry_point_name: ''
+experiment_id: '916476453877775858'
+lifecycle_stage: active
+run_id: 2447a5b7a702488685d15b5a3c4201ac
+run_name: eval
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755586363749
+status: 4
+tags: []
+user_id: khushi_panchal

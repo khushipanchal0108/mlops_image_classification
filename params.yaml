@@ -1,0 +1,32 @@
+data_ingestion:
+  dataset_name: mnist_784
+  data_dir: data
+  raw_dirname: raw
+  train_dirname: train
+  test_dirname: test
+  test_size: 0.2
+  random_state: 42
+  stratify: true
+  max_samples_per_class: 200  # ✅ NEW: limit to 500/class
+  image_format: png
+  image_padding: 0
+  ensure_uint8: true
+  overwrite: true
+  shuffle_before_split: true
+
+data_preprocessing:
+  normalize: true          # scale pixel values [0,1]
+  flatten: true            # flatten 28x28 -> 784
+  augment: false           # data augmentation (future option)
+
+feature_engineering:
+  use_pca: true            # apply PCA or not
+  n_components: 100        # PCA components
+  whiten: false            # PCA whitening
+
+model_building:
+  n_estimators: 150        # RandomForest trees
+  max_depth: 20            # max depth of each tree
+  min_samples_split: 4     # min samples to split
+  min_samples_leaf: 2      # min samples per leaf
+  random_state: 42         # reproducibility

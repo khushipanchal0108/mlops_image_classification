@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Khushi Panchal/Desktop/mlops_image_classification/mlruns/916476453877775858/0867e945cef5431f81049d4551b49b38/artifacts
+end_time: 1755586228886
+entry_point_name: ''
+experiment_id: '916476453877775858'
+lifecycle_stage: active
+run_id: 0867e945cef5431f81049d4551b49b38
+run_name: train
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755586219958
+status: 3
+tags: []
+user_id: khushi_panchal

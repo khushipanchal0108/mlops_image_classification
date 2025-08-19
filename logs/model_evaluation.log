@@ -1,0 +1,2 @@
+2025-08-19 06:52:45,724 - model_evaluation - INFO - Evaluation Metrics: {'accuracy': 0.925, 'precision': 0.9265776299936823, 'recall': 0.9250000000000002, 'f1': 0.9247861745357199}
+2025-08-19 06:52:47,826 - model_evaluation - ERROR - Evaluation failed: Empty git repo
