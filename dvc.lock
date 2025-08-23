@@ -55,7 +55,7 @@ stages:
       isexec: true
     params:
       params.yaml:
-        feature_engineering.n_components: 100
+        feature_engineering.n_components: 150
         feature_engineering.use_pca: true
     outs:
     - path: data/processed
@@ -78,13 +78,13 @@ stages:
       isexec: true
     params:
       params.yaml:
-        model_building.n_estimators: 150
+        model_building.n_estimators: 250
         model_building.random_state: 42
     outs:
     - path: model/model.pkl
       hash: md5
-      md5: 3cc96a84ffab89651c7cd283f751f221
-      size: 11859954
+      md5: f649ff97f90e575ba3a0994b51154ec6
+      size: 16481999
       isexec: true
   model_evaluation:
     cmd: python src/model_evaluation.py
@@ -96,8 +96,8 @@ stages:
       isexec: true
     - path: model/model.pkl
       hash: md5
-      md5: 3cc96a84ffab89651c7cd283f751f221
-      size: 11859954
+      md5: f649ff97f90e575ba3a0994b51154ec6
+      size: 16481999
       isexec: true
     - path: src/model_evaluation.py
       hash: md5
@@ -107,6 +107,6 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: f3d952a4cf8adb2b014c5b163207798f
-      size: 126
+      md5: 09e668aa42ebe7a82bcee8f5ab45ab2e
+      size: 111
       isexec: true

@@ -21,12 +21,12 @@ data_preprocessing:
 
 feature_engineering:
   use_pca: true            # apply PCA or not
-  n_components: 100        # PCA components
+  n_components: 150        # PCA components
   whiten: false            # PCA whitening
 
 model_building:
-  n_estimators: 150        # RandomForest trees
-  max_depth: 20            # max depth of each tree
-  min_samples_split: 4     # min samples to split
-  min_samples_leaf: 2      # min samples per leaf
+  n_estimators: 250        # RandomForest trees
+  max_depth: 15            # max depth of each tree
+  min_samples_split: 2     # min samples to split
+  min_samples_leaf: 1      # min samples per leaf
   random_state: 42         # reproducibility
