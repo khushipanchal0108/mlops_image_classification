@@ -5,3 +5,10 @@
 2025-08-19 06:50:09,468 - feature_engineering - DEBUG - Saved features to data/processed/train_features.npz
 2025-08-19 06:50:09,549 - feature_engineering - DEBUG - Saved features to data/processed/test_features.npz
 2025-08-19 06:50:09,550 - feature_engineering - INFO - Feature engineering completed successfully.
+2025-08-19 09:55:01,219 - feature_engineering - DEBUG - Parameters loaded from params.yaml
+2025-08-19 09:55:01,349 - feature_engineering - DEBUG - Loaded data from data/interim/train_processed.npz
+2025-08-19 09:55:01,430 - feature_engineering - DEBUG - Loaded data from data/interim/test_processed.npz
+2025-08-19 09:55:01,448 - feature_engineering - INFO - Flattening images...
+2025-08-19 09:55:01,612 - feature_engineering - DEBUG - Saved features to data/processed/train_features.npz
+2025-08-19 09:55:01,723 - feature_engineering - DEBUG - Saved features to data/processed/test_features.npz
+2025-08-19 09:55:01,725 - feature_engineering - INFO - Feature engineering completed successfully.

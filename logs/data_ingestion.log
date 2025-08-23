@@ -10,3 +10,11 @@
 2025-08-19 06:19:57,278 - data_ingestion - INFO - Split done. Train: 1600, Test: 400 -
 2025-08-19 06:21:14,109 - data_ingestion - INFO - Saved train/test images and labels under 'data/raw' -
 2025-08-19 06:21:14,110 - data_ingestion - INFO - Data ingestion completed successfully. -
+2025-08-19 09:00:01,626 - data_ingestion - DEBUG - Parameters loaded from params.yaml -
+2025-08-19 09:00:01,633 - data_ingestion - INFO - Fetching dataset 'mnist_784' from OpenML... -
+2025-08-19 09:00:04,593 - data_ingestion - INFO - Fetched MNIST with shape X=(70000, 784), y=(70000,) -
+2025-08-19 09:00:06,591 - data_ingestion - INFO - Subsampling up to 200 samples per class... -
+2025-08-19 09:00:06,599 - data_ingestion - DEBUG - After subsample: X=(2000, 784), y=(2000,) -
+2025-08-19 09:00:06,615 - data_ingestion - INFO - Split done. Train: 1600, Test: 400 -
+2025-08-19 09:01:44,907 - data_ingestion - INFO - Saved train/test images and labels under 'data/raw' -
+2025-08-19 09:01:44,910 - data_ingestion - INFO - Data ingestion completed successfully. -

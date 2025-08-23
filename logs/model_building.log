@@ -6,3 +6,11 @@
 2025-08-19 06:50:21,889 - model_building - INFO - Test Accuracy: 0.9250
 2025-08-19 06:50:22,339 - model_building - DEBUG - Model saved at model/model.pkl
 2025-08-19 06:50:28,883 - model_building - INFO - Model logged to MLflow
+2025-08-19 09:57:20,590 - model_building - DEBUG - Parameters loaded from params.yaml
+2025-08-19 09:57:20,683 - model_building - DEBUG - Loaded data from data/processed/train_features.npz
+2025-08-19 09:57:20,737 - model_building - DEBUG - Loaded data from data/processed/test_features.npz
+2025-08-19 09:57:23,232 - model_building - DEBUG - Training RandomForest with 1600 samples
+2025-08-19 09:57:23,731 - model_building - DEBUG - Training completed
+2025-08-19 09:57:23,795 - model_building - INFO - Test Accuracy: 0.9250
+2025-08-19 09:57:24,187 - model_building - DEBUG - Model saved at model/model.pkl
+2025-08-19 09:57:30,137 - model_building - INFO - Model logged to MLflow

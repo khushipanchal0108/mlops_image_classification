@@ -5,3 +5,10 @@
 2025-08-19 06:49:28,060 - data_preprocessing - DEBUG - Saved processed arrays to data/interim/train_processed.npz
 2025-08-19 06:49:28,101 - data_preprocessing - DEBUG - Saved processed arrays to data/interim/test_processed.npz
 2025-08-19 06:49:28,106 - data_preprocessing - INFO - Data preprocessing completed successfully.
+2025-08-19 09:50:24,625 - data_preprocessing - DEBUG - Parameters loaded from params.yaml
+2025-08-19 09:50:24,633 - data_preprocessing - INFO - Loading label CSVs...
+2025-08-19 09:50:24,671 - data_preprocessing - INFO - Preprocessing train set...
+2025-08-19 09:50:31,264 - data_preprocessing - INFO - Preprocessing test set...
+2025-08-19 09:50:32,772 - data_preprocessing - DEBUG - Saved processed arrays to data/interim/train_processed.npz
+2025-08-19 09:50:32,852 - data_preprocessing - DEBUG - Saved processed arrays to data/interim/test_processed.npz
+2025-08-19 09:50:32,853 - data_preprocessing - INFO - Data preprocessing completed successfully.
