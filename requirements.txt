@@ -1,0 +1,12 @@
+numpy
+pandas
+scikit-learn
+matplotlib
+tensorflow
+keras
+mlflow
+dvc[s3]
+pyyaml
+dvclive
+awscli
+pytest
