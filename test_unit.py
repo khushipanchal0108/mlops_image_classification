@@ -3,6 +3,7 @@ import sys
 import pytest
 import numpy as np
 import pickle
+import pandas as pd
 
 # Add src folder to sys.path so tests can import modules
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
@@ -48,10 +49,20 @@ def test_model_can_predict(sample_features_labels):
     y_pred = model.predict(X)
     assert len(y_pred) == X.shape[0]
 
-def test_preprocess_output_shape():
-    X_raw = np.random.randint(0, 255, (5, 28, 28))  # 5 images
-    X_processed = dp.preprocess_images(X_raw)
-    assert X_processed.shape == (5, 784)  # flattened
+def test_load_images_from_df():
+    """Test your actual preprocessing function in data_preprocessing.py"""
+    # Create dummy dataframe
+    df = pd.DataFrame({"filepath": ["data/raw/sample_0.png", "data/raw/sample_1.png"]})
+    # Create dummy images
+    os.makedirs("data/raw", exist_ok=True)
+    for i in range(2):
+        img = np.random.randint(0, 255, (28, 28), dtype=np.uint8)
+        from PIL import Image
+        Image.fromarray(img).save(f"data/raw/sample_{i}.png")
+
+    images = dp.load_images_from_df(df, img_shape=(28, 28), normalize=True, add_channel=True)
+    assert images.shape == (2, 28, 28, 1)
+    assert np.max(images) <= 1.0  # normalized
 
 def test_feature_engineering_pca():
     X = np.random.rand(5, 784)
