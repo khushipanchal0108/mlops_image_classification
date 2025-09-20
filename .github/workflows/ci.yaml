@@ -40,7 +40,7 @@ jobs:
         run: pytest -q --disable-warnings --maxfail=1
 
       - name: Pull latest DVC data
-        run: dvc pull
+        run: dvc pull --force
 
       - name: Run DVC pipeline
         run: dvc repro
