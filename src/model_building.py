@@ -86,6 +86,8 @@ def save_model(model, file_path: str):
 
 # ----------------------------- Main -----------------------------
 def main():
+    # Ensure mlruns directory exists to avoid permission issues
+    os.makedirs("mlruns", exist_ok=True)
     mlflow.set_tracking_uri(f"file://{os.path.abspath('mlruns')}")
     mlflow.set_experiment("MNIST-Pipeline")
 
@@ -125,3 +127,14 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+    except Exception as e:
+        logger.error("Model building failed: %s", e)
+        print(f"Error: {e}")
+        raise
+
+
+if __name__ == "__main__":
+    main()
+
