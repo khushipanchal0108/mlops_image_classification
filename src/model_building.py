@@ -125,16 +125,4 @@ def main():
         raise
 
 
-if __name__ == "__main__":
-    main()
-
-
-    except Exception as e:
-        logger.error("Model building failed: %s", e)
-        print(f"Error: {e}")
-        raise
-
-
-if __name__ == "__main__":
-    main()
 
