@@ -71,5 +71,6 @@ def test_model_evaluation(sample_features_labels):
     X, y = sample_features_labels
     with open(MODEL_PATH, "rb") as f:
         model = pickle.load(f)
-    metrics = me.evaluate_model(model, X, y)
+    metrics, _ = me.evaluate_model(model, X, y)  # unpack the tuple
     assert all(k in metrics for k in ["accuracy", "precision", "recall", "f1"])
+
