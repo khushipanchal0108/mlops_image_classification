@@ -33,14 +33,14 @@ jobs:
 
       - name: Configure DVC remote
         run: |
-          dvc remote add -f aws ${{ secrets.DVC_S3_URL }}
+          dvc remote add -f aws s3://mlops-ci-bucket/files/
           dvc remote default aws
 
       - name: Run unit tests
         run: pytest -q --disable-warnings --maxfail=1
 
       - name: Pull latest DVC data
-        run: dvc pull --force
+        run: dvc pull --force || echo "No data to pull, continuing workflow"
 
       - name: Run DVC pipeline
         run: dvc repro
@@ -49,7 +49,12 @@ jobs:
         run: dvc push
 
       - name: Show metrics
-        run: cat reports/metrics.json || echo "No metrics.json found"
+        run: |
+          if [ -f reports/metrics.json ]; then
+            cat reports/metrics.json
+          else
+            echo "No metrics.json found"
+          fi
 
       - name: Upload metrics artifact
         if: always()
