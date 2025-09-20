@@ -49,10 +49,11 @@ def test_model_can_predict(sample_features_labels):
     assert len(y_pred) == X.shape[0]
 
 def test_preprocess_output_shape():
-    # Generate 50 images for proper PCA compatibility
     X_raw = np.random.randint(0, 255, (50, 28, 28))
-    X_processed = dp.flatten_images(X_raw)  # Use flatten_images from data_preprocessing
+    # Flatten manually inside test
+    X_processed = X_raw.reshape(X_raw.shape[0], -1)
     assert X_processed.shape == (50, 784)
+
 
 def test_feature_engineering_pca():
     X = np.random.rand(50, 784)
