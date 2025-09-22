@@ -1,4 +1,6 @@
 [core]
-    remote = awss3
+    remote = aws
 ['remote "awss3"']
-    url = s3://mlops-khushi-classification
+    url = s3://mlops-ci-bucket
+['remote "aws"']
+    url = s3://mlops-ci-bucket/files/
