@@ -1,33 +1,31 @@
-# src/model_building.py
 """
-Model training for MNIST classification:
-- Loads processed features (from feature_engineering.py)
-- Trains classifier (default: RandomForest)
-- Logs params & metrics with MLflow
-- Saves model to model/model.pkl
+Model evaluation for MNIST classification:
+- Loads model.pkl and test data (.npz)
+- Computes metrics (accuracy, precision, recall, f1)
+- Logs to DVC Live
+- Saves metrics.json
 """
 
 import os
 import sys
+import json
 import pickle
 import logging
 import yaml
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-import mlflow
-import mlflow.sklearn
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
+from dvclive import Live
 
 # ----------------------------- Logging setup -----------------------------
 LOG_DIR = "logs"
 os.makedirs(LOG_DIR, exist_ok=True)
-logger = logging.getLogger("model_building")
+logger = logging.getLogger("model_evaluation")
 logger.setLevel(logging.DEBUG)
 
 if not logger.handlers:
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.DEBUG)
-    log_file_path = os.path.join(LOG_DIR, "model_building.log")
+    log_file_path = os.path.join(LOG_DIR, "model_evaluation.log")
     fh = logging.FileHandler(log_file_path)
     fh.setLevel(logging.DEBUG)
     fmt = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -38,94 +36,78 @@ if not logger.handlers:
 
 
 # ----------------------------- Utils -----------------------------
-def load_params(params_path="params.yaml") -> dict:
-    try:
-        with open(params_path, "r") as f:
-            params = yaml.safe_load(f)
-        logger.debug("Parameters loaded from %s", params_path)
-        return params
-    except Exception as e:
-        logger.error("Failed to load params.yaml: %s", e)
-        raise
+def load_params(params_path: str = "params.yaml") -> dict:
+    with open(params_path, "r") as f:
+        params = yaml.safe_load(f)
+    return params
+
+
+def load_model(file_path: str):
+    with open(file_path, "rb") as f:
+        return pickle.load(f)
 
 
 def load_numpy_data(file_path: str):
-    try:
-        data = np.load(file_path)
-        X, y = data["X"], data["y"]
-        logger.debug("Loaded data from %s", file_path)
-        return X, y
-    except Exception as e:
-        logger.error("Failed to load numpy data: %s", e)
-        raise
+    data = np.load(file_path)
+    return data["X"], data["y"]
 
 
-def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict):
-    try:
-        clf = RandomForestClassifier(
-            n_estimators=params.get("n_estimators", 100),
-            max_depth=params.get("max_depth", None),
-            random_state=params.get("random_state", 42),
-            n_jobs=-1,
-        )
-        logger.debug("Training RandomForest with %d samples", X_train.shape[0])
-        clf.fit(X_train, y_train)
-        logger.debug("Training completed")
-        return clf
-    except Exception as e:
-        logger.error("Training failed: %s", e)
-        raise
+def evaluate_model(clf, X_test: np.ndarray, y_test: np.ndarray) -> dict:
+    y_pred = clf.predict(X_test)
+
+    metrics_dict = {
+        "accuracy": accuracy_score(y_test, y_pred),
+        "precision": precision_score(y_test, y_pred, average="macro"),
+        "recall": recall_score(y_test, y_pred, average="macro"),
+        "f1": f1_score(y_test, y_pred, average="macro"),
+    }
+
+    logger.info("Evaluation Metrics: %s", metrics_dict)
+    return metrics_dict, y_pred
 
 
-def save_model(model, file_path: str):
+def save_metrics(metrics: dict, file_path: str):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, "wb") as f:
-        pickle.dump(model, f)
-    logger.debug("Model saved at %s", file_path)
+    with open(file_path, "w") as f:
+        json.dump(metrics, f, indent=4)
 
 
 # ----------------------------- Main -----------------------------
 def main():
-    os.makedirs("mlruns", exist_ok=True)
-    mlflow.set_tracking_uri("file://" +os.path.abspath('mlruns'))
-    mlflow.set_experiment("MNIST-Pipeline")
-
     try:
-        params = load_params()["model_building"]
-        processed_root = os.path.join("data", "processed")
+        params = load_params()
+        clf = load_model("./model/model.pkl")
+        X_test, y_test = load_numpy_data("./data/processed/test_features.npz")
 
-        train_file = os.path.join(processed_root, "train_features.npz")
-        test_file = os.path.join(processed_root, "test_features.npz")
+        metrics, y_pred = evaluate_model(clf, X_test, y_test)
 
-        X_train, y_train = load_numpy_data(train_file)
-        X_test, y_test = load_numpy_data(test_file)
+        # Save metrics.json
+        save_metrics(metrics, "reports/metrics.json")
 
-        with mlflow.start_run(run_name="train"):
-            mlflow.log_params(params)
+        # Log metrics to DVC Live
+        with Live(save_dvc_exp=True) as live:
+            for k, v in metrics.items():
+                live.log_metric("accuracy", metrics["accuracy"])
+                live.log_metric("precision", metrics["precision"])
+                live.log_metric("recall", metrics["recall"])
+                live.log_metric("f1", metrics["f1"])
+                live.log_params(params)
 
-            clf = train_model(X_train, y_train, params)
-            y_pred = clf.predict(X_test)
+        # Extra: log classification report
+        report = classification_report(y_test, y_pred, output_dict=True)
+        report_path = "reports/classification_report.json"
+        with open(report_path, "w") as f:
+            json.dump(report, f, indent=4)
 
-            acc = accuracy_score(y_test, y_pred)
-            logger.info("Test Accuracy: %.4f", acc)
-            mlflow.log_metric("test_accuracy", acc)
+        # Extra: confusion matrix
+        cm = confusion_matrix(y_test, y_pred)
+        cm_path = "reports/confusion_matrix.npy"
+        np.save(cm_path, cm)
 
-            # ---------------- DVC-friendly model saving ----------------
-            model_dir = "model"   # relative path
-            os.makedirs(model_dir, exist_ok=True)
-            model_save_path = os.path.join(model_dir, "model.pkl")
-            save_model(clf, model_save_path)
-
-
-            try:
-                mlflow.sklearn.log_model(clf, "mnist_rf_model")
-                logger.info("Model logged to MLflow")
-            except Exception as mlflow_err:
-                logger.warning("MLflow logging failed: %s", mlflow_err)
+        logger.info("Evaluation completed and logged to DVC")
 
     except Exception as e:
-        logger.error("Model building failed: %s", e)
-        print(f"Error: {e}")
+        logger.error("Evaluation failed: %s", e)
         raise
 
 
