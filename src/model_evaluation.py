@@ -76,7 +76,7 @@ def save_metrics(metrics: dict, file_path: str):
 # ----------------------------- Main -----------------------------
 def main():
     import mlflow
-    mlflow.set_tracking_uri(f"file://{os.path.join(os.getcwd(), 'mlruns')}")
+    mlflow.set_tracking_uri(f"file://" +os.path.abspath('mlruns'))
     mlflow.set_experiment("MNIST-Pipeline")
 
     try:

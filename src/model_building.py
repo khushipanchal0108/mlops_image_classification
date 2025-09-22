@@ -87,7 +87,7 @@ def save_model(model, file_path: str):
 # ----------------------------- Main -----------------------------
 def main():
     os.makedirs("mlruns", exist_ok=True)
-    mlflow.set_tracking_uri(f"file://{os.path.abspath('mlruns')}")
+    mlflow.set_tracking_uri("file://" +os.path.abspath('mlruns'))
     mlflow.set_experiment("MNIST-Pipeline")
 
     try:
