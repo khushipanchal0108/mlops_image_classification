@@ -111,10 +111,11 @@ def main():
             mlflow.log_metric("test_accuracy", acc)
 
             # ---------------- DVC-friendly model saving ----------------
-            model_dir = os.path.join(os.getcwd(), "model")
+            model_dir = "model"   # relative path
             os.makedirs(model_dir, exist_ok=True)
             model_save_path = os.path.join(model_dir, "model.pkl")
             save_model(clf, model_save_path)
+
 
             try:
                 mlflow.sklearn.log_model(clf, "mnist_rf_model")
