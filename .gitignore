@@ -9,9 +9,9 @@ data/interim/
 data/processed/
 
 # Ignore models
-model/
-*.pkl
-*.h5
+#model/
+#*.pkl
+#*.h5
 
 # Ignore reports
 reports/
