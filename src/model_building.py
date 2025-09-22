@@ -86,7 +86,6 @@ def save_model(model, file_path: str):
 
 # ----------------------------- Main -----------------------------
 def main():
-    # Ensure mlruns directory exists to avoid permission issues
     os.makedirs("mlruns", exist_ok=True)
     mlflow.set_tracking_uri(f"file://{os.path.abspath('mlruns')}")
     mlflow.set_experiment("MNIST-Pipeline")
@@ -111,18 +110,22 @@ def main():
             logger.info("Test Accuracy: %.4f", acc)
             mlflow.log_metric("test_accuracy", acc)
 
-            # Save model locally
+            # ✅ Always save model locally first (so DVC sees it)
             model_save_path = os.path.join("model", "model.pkl")
             save_model(clf, model_save_path)
 
-            # Log model to MLflow
-            mlflow.sklearn.log_model(clf, "mnist_rf_model")
-            logger.info("Model logged to MLflow")
+            try:
+                # Log model to MLflow (may fail in CI)
+                mlflow.sklearn.log_model(clf, "mnist_rf_model")
+                logger.info("Model logged to MLflow")
+            except Exception as mlflow_err:
+                logger.warning("MLflow logging failed: %s", mlflow_err)
 
     except Exception as e:
         logger.error("Model building failed: %s", e)
         print(f"Error: {e}")
         raise
+
 
 
 
