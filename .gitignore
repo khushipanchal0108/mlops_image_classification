@@ -11,7 +11,7 @@ data/processed/
 # Ignore models
 #model/
 #*.pkl
-#*.h5
+*.h5
 
 # Ignore reports
 reports/
