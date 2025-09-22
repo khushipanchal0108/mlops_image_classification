@@ -14,7 +14,7 @@ import logging
 import yaml
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score
 import mlflow
 import mlflow.sklearn
 
@@ -110,12 +110,13 @@ def main():
             logger.info("Test Accuracy: %.4f", acc)
             mlflow.log_metric("test_accuracy", acc)
 
-            # ✅ Always save model locally first (so DVC sees it)
-            model_save_path = os.path.join("model", "model.pkl")
+            # ---------------- DVC-friendly model saving ----------------
+            model_dir = os.path.join(os.getcwd(), "model")
+            os.makedirs(model_dir, exist_ok=True)
+            model_save_path = os.path.join(model_dir, "model.pkl")
             save_model(clf, model_save_path)
 
             try:
-                # Log model to MLflow (may fail in CI)
                 mlflow.sklearn.log_model(clf, "mnist_rf_model")
                 logger.info("Model logged to MLflow")
             except Exception as mlflow_err:
@@ -127,5 +128,5 @@ def main():
         raise
 
 
-
-
+if __name__ == "__main__":
+    main()
